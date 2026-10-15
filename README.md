@@ -40,6 +40,7 @@ packs/<id>/
 | `managed` | pack 擁有。更新時：目標檔未被手改（hash 與 lock 相同）→ 覆蓋；被手改過 → 另存 `<檔名>.pack-new`，不覆蓋 |
 | `seed` | 只在目標不存在時建立，之後歸專案所有（config、modules.json、狀態檔、wiki/INDEX.md） |
 | `block` | 以 `<!-- agentpacks:<id>:start/end -->`（.md）或 `# agentpacks:<id>:start/end`（其他）標記區塊插入或替換，不動區塊外內容 |
+| `dir` | 只建立空目錄（不需來源檔；不要用 `.gitkeep`，electron-builder 打包時會濾掉） |
 
 ### 模板
 
