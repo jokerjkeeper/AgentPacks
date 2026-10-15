@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "_note": "模組層受控詞表（單一權威來源）。三處共用：(1) /curate 的 features.json 模組層封閉詞表（feature 鍵 = <name>/<功能>，見 .agent/spec/wiki.md §3~§4）(2) git commit 的模組 tag（.agent/spec/git.md §3）(3) cr-planfix extract_risks.py 的風險分類。新增模組只改本檔。初始只有「系統」，隨 /curate 回報的 module_provisional 逐步補齊。",
+  "_schema": {
+    "name": "canonical 短模組名。= /curate 指派的 features.json module = git [模組] tag = wiki system = feature 鍵前綴（例 戰鬥/技能）。唯一、穩定、勿輕改。",
+    "key": "英文 slug。cr-planfix 輸出檔名、程式內部識別用。",
+    "label": "cr-planfix 顯示用群組名（沒有就同 name）。",
+    "aliases": "口語 / 同義詞 / code 命名，供 /curate 與 /stopic 語意召回；可跨模組重疊。",
+    "path_hints": "檔案路徑關鍵字（不分大小寫，比對正斜線路徑），僅供 cr-planfix 比對 codereview『檔案：』路徑。空陣列＝不靠路徑自動歸入。",
+    "title_hints": "供 cr-planfix 比對 commit 標題 / 風險內文的確定性關鍵字。刻意與 aliases 分開維護。",
+    "_order": "modules 陣列順序 = cr-planfix 分類優先序，越前越優先命中；較具體的路徑放前面，系統置末。"
+  },
+  "modules": [
+    {
+      "name": "系統", "key": "system", "label": "系統 / 專案設定",
+      "aliases": ["系統設定", "專案設定", "agent", "工作流程"],
+      "path_hints": [".agent/", ".claude/", "agents.md", "claude.md"],
+      "title_hints": ["agent", "規範", "工作流程", "設定"]
+    }
+  ],
+  "fallback": {
+    "name": "其他", "key": "misc", "label": "其他 / 系統",
+    "aliases": [], "path_hints": [], "title_hints": []
+  }
+}

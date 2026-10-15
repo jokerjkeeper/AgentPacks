@@ -1,0 +1,6 @@
+{
+  "schema": 1,
+  "name": "AgentPacks",
+  "description": "可安裝到任何專案的 Claude Code agent 能力包（commands / skills / specs / scripts）。",
+  "packs_dir": "packs"
+}
