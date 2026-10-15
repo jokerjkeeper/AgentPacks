@@ -109,7 +109,7 @@ def list_commits(mode, value, root, ref):
 
 def changed_code_files(sha, root, is_excluded):
     """取得單一 commit 的程式變更檔（已過濾排除）。"""
-    out = git(["diff-tree", "--no-commit-id", "-r", "-M", "--name-status", sha], cwd=root)
+    out = git(["diff-tree", "--root", "--no-commit-id", "-r", "-M", "--name-status", sha], cwd=root)
     files = []
     for line in out.splitlines():
         if not line.strip():
