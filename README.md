@@ -14,6 +14,7 @@ Launcher 預設從本 GitHub repo 取得最新 pack，並內建一份快照供�
 | `git-spec` | Git 提交規範 | `.agent/spec/git.md`（canonical 版：`[type][模組]` 格式、分組規則、工單分支）；與 wiki 的 git.md 同路徑，擇一 |
 | `taskhub` | TaskHub 工單（項目綁定） | `.claude/api.conf` + `claude_spc_wepages.md`，綁定整個 TaskHub 項目 |
 | `wepages` | WePages 工單（task 綁定） | `.claude/api.conf` + `claude_spc_wepages.md`，綁定 `WEPAGES_TASK_IDS` 白名單；與 taskhub 寫同一組檔案，擇一 |
+| `unity-cli` | Unity CLI / Editor MCP | `unity pipeline install`（`com.unity.pipeline`）、CLAUDE.md 使用說明、`unity-inspector` 唯讀 subagent；可選在 `.mcp.json` 固定本專案的 `unity-editor-mcp` |
 
 ## 目錄結構
 

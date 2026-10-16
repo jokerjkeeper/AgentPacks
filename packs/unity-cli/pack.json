@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "id": "unity-cli",
+  "name": "Unity CLI / Editor MCP",
+  "version": "1.0.0",
+  "description": "讓 Claude Code 透過 Unity CLI 的 unity-editor-mcp 直接操作開著的 Editor：安裝 com.unity.pipeline 套件、CLAUDE.md 使用說明、unity-inspector 唯讀 subagent（大型場景階層交給它讀並回摘要）。CLI 安裝與 user 層 MCP 註冊屬全機設定，不在此 pack 範圍（見 hint）。",
+  "tags": ["unity", "mcp", "editor"],
+  "requires_tools": [
+    { "name": "unity", "cmd": "unity --version", "hint": "未安裝 Unity CLI（全機一次）：PowerShell 執行 $env:UNITY_CLI_CHANNEL='beta'; irm https://public-cdn.cloud.unity3d.com/hub/prod/cli/install.ps1 | iex ，重開終端後執行 unity mcp configure claude-code 註冊 MCP" }
+  ],
+  "params": [],
+  "presets": {},
+  "files": [
+    { "path": ".claude/agents/unity-inspector.md", "mode": "managed" },
+    { "path": "CLAUDE.md", "source": "blocks/CLAUDE.md", "mode": "block" }
+  ],
+  "post_install": [
+    {
+      "id": "pipeline",
+      "label": "安裝 com.unity.pipeline 套件到 Packages/manifest.json（unity pipeline install，Editor 下次聚焦時解析）",
+      "check": "unity --version",
+      "run": ["unity", "pipeline", "install", "--project-path", "{{target}}", "--non-interactive"],
+      "default": true
+    },
+    {
+      "id": "mcp-project",
+      "label": "在 .mcp.json 加入固定本專案的 unity-editor-mcp（同時開多個 Editor 時避免連錯；已存在會失敗，可忽略）",
+      "check": "claude --version",
+      "run": ["claude", "mcp", "add", "--scope", "project", "unity-editor-mcp", "--", "unity", "mcp", "--project-path", "{{target}}"],
+      "default": false
+    }
+  ]
+}
