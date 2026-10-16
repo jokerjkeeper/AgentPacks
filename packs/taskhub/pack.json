@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "id": "taskhub",
+  "name": "TaskHub 工單（項目綁定）",
+  "version": "1.0.0",
+  "description": "把本目錄綁定到 TaskHub 的整個項目：產生 .claude/api.conf 與 claude_spc_wepages.md（curl 速查、驗收清單端點）。與 wepages pack 寫同一組檔案，兩者擇一。",
+  "tags": ["taskhub", "wepages", "ticket"],
+  "requires_tools": [
+    { "name": "curl", "cmd": "curl --version", "hint": "需要 curl 呼叫 REST API" }
+  ],
+  "params": [
+    { "key": "url", "label": "服務地址", "type": "string", "default": "http://10.1.129.107:5003" },
+    { "key": "token", "label": "API Token", "type": "string", "default": "", "secret": true, "required": false, "help": "只寫進 api.conf，不記錄到 lock；api.conf 已存在時不會覆蓋，可留空" },
+    { "key": "project_id", "label": "項目 ID", "type": "string", "default": "" },
+    { "key": "project_name", "label": "項目名稱", "type": "string", "default": "{{dirname}}" }
+  ],
+  "presets": {},
+  "files": [
+    { "path": ".claude/api.conf", "source": "files/.claude/api.conf.tmpl", "mode": "seed", "template": true },
+    { "path": ".claude/claude_specs/claude_spc_wepages.md", "mode": "managed", "template": true }
+  ],
+  "post_install": []
+}

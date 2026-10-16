@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "id": "git-spec",
+  "name": "Git 提交規範",
+  "version": "1.0.0",
+  "description": "團隊 git commit / 分支規範（canonical）：[type][模組] 標題格式、type 詞表、分組規則、Unity .meta 配對、task/<id>-<slug> 工單分支、cc 只 commit 不 push。與 wiki pack 同樣寫 .agent/spec/git.md，兩者擇一。",
+  "tags": ["git", "spec"],
+  "requires_tools": [
+    { "name": "git", "cmd": "git --version", "hint": "需要 git" }
+  ],
+  "params": [],
+  "presets": {},
+  "files": [
+    { "path": ".agent/spec/git.md", "mode": "managed" }
+  ],
+  "post_install": []
+}

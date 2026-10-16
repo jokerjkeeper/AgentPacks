@@ -11,6 +11,9 @@ Launcher 預設從本 GitHub repo 取得最新 pack，並內建一份快照供�
 |----|------|------|
 | `wiki` | 程式 Wiki | `/cr-daily` 每日 code review → `/curate` 策展 → `wiki/` 知識庫；`/stopic` `/ask` `/resolve` `/cr-planfix`；每日前置規劃器 |
 | `codegraph` | CodeGraph 索引 | `.codegraph/.gitignore`、CLAUDE.md 使用說明、可選 `codegraph init` |
+| `git-spec` | Git 提交規範 | `.agent/spec/git.md`（canonical 版：`[type][模組]` 格式、分組規則、工單分支）；與 wiki 的 git.md 同路徑，擇一 |
+| `taskhub` | TaskHub 工單（項目綁定） | `.claude/api.conf` + `claude_spc_wepages.md`，綁定整個 TaskHub 項目 |
+| `wepages` | WePages 工單（task 綁定） | `.claude/api.conf` + `claude_spc_wepages.md`，綁定 `WEPAGES_TASK_IDS` 白名單；與 taskhub 寫同一組檔案，擇一 |
 
 ## 目錄結構
 
@@ -28,7 +31,7 @@ packs/<id>/
 |------|------|
 | `id` / `name` / `version` / `description` | 基本資訊；`version` 採 semver，改內容就要升版 |
 | `requires_tools[]` | `{ name, cmd, hint, optional }`：安裝前檢查的外部工具（`cmd` 結束碼 0 即通過） |
-| `params[]` | `{ key, label, type: string\|list, default, help }`；`default` 可用 `{{dirname}}`（目標資料夾名） |
+| `params[]` | `{ key, label, type: string\|list, default, help, required, secret }`；`default` 可用 `{{dirname}}`（目標資料夾名）；`required: false` 允許留空；`secret: true` 以密碼框輸入且不寫入 lock（token 用） |
 | `presets{}` | `{ <id>: { label, values: { key: value } } }`：依專案類型帶入參數預設值 |
 | `files[]` | `{ path, source?, mode, template? }`，見下表；`source` 相對 pack 目錄，預設 `files/<path>` |
 | `post_install[]` | `{ id, label, check, skip_if_exists, run: [argv…], default }`：安裝後可勾選執行的指令 |
