@@ -1,3 +1,10 @@
+---
+name: curate
+description: 每日策展：把 codereview、工單（raw/tickets）與 spec（raw/spec）的新增 / 變更策展進 wiki/，維護 feature 對齊、權威對賬與驗證佇列。當用戶呼叫 /curate 或要求策展知識庫時觸發；可帶來源（如 codereview）或 feature 限定範圍。
+version: 2.0.0
+origin: agentpacks/wiki
+---
+
 # /curate — 每日策展
 
 掃描來源（codereview / tickets / spec），把新增/變更的內容策展進 `wiki/`，並維護驗證閉環狀態（feature 對齊、權威對賬、待審佇列）。
@@ -49,4 +56,4 @@
 
 忠實整理、不臆測、每點標來源、區分 confirmed/（待確認）。schema、權威分級、拆檔與模組封閉詞表皆以 `.agent/spec/wiki.md` 為準。
 
-可選 `$ARGUMENTS`：只策展某來源（如 `codereview`）或某 `feature`。
+可選參數：只策展某來源（如 `codereview`）或某 `feature`。

@@ -30,7 +30,7 @@ origin: project
 ```
 SRC     = <paths.docs_codereview>            # aispec/codereview，來源日報
 OUT     = <paths.docs_codereview>/planfix    # 輸出
-SCRIPT  = .claude/skills/cr-planfix/extract_risks.py
+SCRIPT  = .agent/capabilities/skills/cr-planfix/extract_risks.py
 MODULES = <paths.modules_spec>               # .agent/spec/modules.json，模塊詞表
 ```
 
@@ -40,13 +40,13 @@ MODULES = <paths.modules_spec>               # .agent/spec/modules.json，模塊
 
 ```bash
 # 全部日報
-python .claude/skills/cr-planfix/extract_risks.py
+python .agent/capabilities/skills/cr-planfix/extract_risks.py
 
 # 只處理某天
-python .claude/skills/cr-planfix/extract_risks.py --date 2026-05-14
+python .agent/capabilities/skills/cr-planfix/extract_risks.py --date 2026-05-14
 
 # 處理某區間
-python .claude/skills/cr-planfix/extract_risks.py --date 2026-05-01..2026-05-31
+python .agent/capabilities/skills/cr-planfix/extract_risks.py --date 2026-05-01..2026-05-31
 ```
 
 腳本會**先清掉上一輪自己產生的檔案**再重寫，可安全重跑（idempotent）。

@@ -42,7 +42,7 @@ def _load_module_vocab():
     """
     try:
         here = Path(__file__).resolve()
-        root = here.parents[3]                                   # → repo 根（.claude/skills/cr-planfix/ 上三層）
+        root = here.parents[4]                                   # → repo 根（.agent/capabilities/skills/cr-planfix/ 上四層）
         cfg = json.loads((root / ".agent" / "config.json").read_text(encoding="utf-8"))
         spec_path = root / cfg["paths"]["modules_spec"]          # config 內為 repo 相對路徑
         data = json.loads(spec_path.read_text(encoding="utf-8"))
@@ -171,7 +171,7 @@ def date_filter(stem: str, spec: str) -> bool:
 
 def _repo_path(key: str, fallback: str) -> Path:
     """取 .agent/config.json 的 paths.<key>（repo 相對路徑），失敗時用 fallback。"""
-    root = Path(__file__).resolve().parents[3]
+    root = Path(__file__).resolve().parents[4]
     try:
         cfg = json.loads((root / ".agent" / "config.json").read_text(encoding="utf-8"))
         return root / cfg["paths"][key]

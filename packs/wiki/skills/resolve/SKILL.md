@@ -1,3 +1,10 @@
+---
+name: resolve
+description: 處理 .state/review_queue.json 驗證佇列：依人工意見或讀 code 驗證，更新 wiki 與 authority 並標 resolved。當用戶呼叫 /resolve（可帶 id / feature）時觸發。
+version: 2.0.0
+origin: agentpacks/wiki
+---
+
 # /resolve — 處理驗證佇列
 
 讀 `<STATE>/review_queue.json`，把待處理項落地（依人工意見或讀 code 驗證），更新 `wiki/` + `authority`，標 `resolved`。
@@ -24,4 +31,4 @@
 
 高 tier（codereview/code/人工 1 > ticket 2）覆蓋低 tier；忠實依來源 / 人工意見，不臆測；讀 code 報告事實＝轉述（Tier1）。人類「對」只升信心，最終以 code / 工單 / 實作為 ground truth。見 `.agent/spec/wiki.md` §8。
 
-可選 `$ARGUMENTS`：只處理某 `id` / `feature`。
+可選參數：只處理某 `id` / `feature`。

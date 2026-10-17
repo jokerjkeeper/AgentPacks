@@ -34,7 +34,9 @@ origin: project
 | `CODEREVIEW_OUT` | `codereview_out` | (b) 知識素材輸出（code 數據家，`/curate` 直讀） |
 | `AGENT_RAW` | `agent_raw_codereview` | **拆解模式**才用：外部 wiki repo 的攝取 inbox。`null` / 未設＝**合併模式**（預設），不複製 |
 | `CURSOR` | `cursor` | 向前 review 游標 |
-| `COLLECT` | `collector` | git 收集器 cr_collect.py |
+| `COLLECT` | `collector` | git 收集器 cr_collect.py（canonical：`.agent/capabilities/skills/cr-daily/cr_collect.py`） |
+
+> config 的 `collector` 若仍指向舊位置 `.claude/skills/cr-daily/cr_collect.py` 而該檔不存在（wiki pack v1 遷移後），改用 canonical 位置執行，並提醒用戶更新 `.agent/config.json`。
 
 **執行前確認 `CODEREVIEW_OUT` 目錄存在**（`ls` 一下，不存在可建——這是本 repo 自己的目錄）。
 **`AGENT_RAW` 為 null / 未設 / 目錄不存在**：即合併模式，略過 Step 3.5 導入（這是預設、不是錯誤）；不要 mkdir 別人的庫。

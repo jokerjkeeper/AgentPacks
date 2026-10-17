@@ -1,17 +1,23 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": "git-spec",
   "name": "Git 提交規範",
-  "version": "1.0.0",
-  "description": "團隊 git commit / 分支規範（canonical）：[type][模組] 標題格式、type 詞表、分組規則、Unity .meta 配對、task/<id>-<slug> 工單分支、cc 只 commit 不 push。與 wiki pack 同樣寫 .agent/spec/git.md，兩者擇一。",
+  "version": "2.0.0",
+  "description": "團隊 git commit 規範（canonical）：[type][模組] 標題格式、type 詞表、分組規則、Unity .meta 配對、cc 只 commit 不 push；分支策略寫在專案自有的 git-project.md。附 git skill（從雜亂工作區只提交本功能），claude / codex / opencode 共用（需 agent-env）。",
   "tags": ["git", "spec"],
+  "requires_packs": ["agent-env"],
   "requires_tools": [
     { "name": "git", "cmd": "git --version", "hint": "需要 git" }
   ],
   "params": [],
   "presets": {},
-  "files": [
-    { "path": ".agent/spec/git.md", "mode": "managed" }
+  "legacy": [".claude/skills/git/", ".codex/skills/git/"],
+  "skills": ["git"],
+  "specs": [
+    { "file": "git.md", "title": "Git 提交規範（通用）", "load": "auto", "when": "任何 commit 之前" },
+    { "file": "git-project.md", "title": "Git 本專案現況（分支 / push / 例外）", "load": "auto", "mode": "seed", "when": "任何 commit、開分支或 push 之前；專案自有，可直接修改" },
+    { "file": "modules.json", "title": "模組受控詞表", "load": "ondemand", "mode": "seed", "when": "決定 commit 的模組 tag、wiki feature 的模組層時" }
   ],
+  "files": [],
   "post_install": []
 }

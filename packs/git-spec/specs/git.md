@@ -1,7 +1,7 @@
 # Git 規格（agent 依據・canonical）
 
 > 本檔為 git 提交 / 分支規範的**單一真相來源**，供 cc / codex / opencode 遵循。
-> 由 `AGENTS.md` 索引載入。成員說明版見 `docs/Git提交規範.md`（內容以本檔為準）。
+> 由 `AGENTS.md` 索引載入（AgentPacks git-spec 管理，勿在專案內手改；專案差異寫在 `.agent/spec/git-project.md`）。
 
 ## 1. commit message 格式
 
@@ -32,10 +32,10 @@
 
 ## 3. 模組 tag（後續框・受控・系統層）
 
-- 用**系統 / 模組層**名稱：戰場、大地圖、幻世牌、轉職、回憶錄、UI、GM…
+- 用**系統 / 模組層**名稱（例：戰場、UI、資料表、GM…，實際名稱以詞表為準）。
 - **相同系統不細分**（都是戰場就一律 `[戰場]`）。
+- **只能取自受控詞表 `.agent/spec/modules.json` 的 `name`**（單一權威來源）。找不到合適的模組時，先在詞表加一筆再用，不要自創 tag。
 - 與**知識庫 feature / wiki `system` / codereview 分類同源**，使 git tag ↔ wiki 系統頁對齊。
-- 受控詞表本體由維護者統一維護（待建，與 wiki feature 同源）。
 
 ## 4. 分組規則（cc 給提案，逐筆可調）
 
@@ -49,29 +49,23 @@
 - 非程式內容（`.png` / `.mat` / `.prefab` / `.asset` / 美術路徑）→ 標「需人工確認」，cc 不自動 commit，需人點頭。
 - Unity `.meta` 必須與其資產**配對 commit**；缺配對要擋並提示。
 
-## 6. 分支策略（方案 B：工單分支 + 測試 gate）
+## 6. 分支策略
 
-```
-develop ──┬─ task/<id>-<slug>   (cc 在此 commit)
-          └─ …
-   人工 push task 分支 → 測試人 pull 該分支測試 → 確認 → merge 回 develop → push develop
-```
+**分支策略因專案而異，一律以 `.agent/spec/git-project.md` 為準**（專案自有檔，由各專案維護；本檔不寫死）。
+沒有該檔時，視為「不確定」：commit 前先問用戶要在哪個分支提交。
 
-- cc 從 `develop` 切本地分支 `task/<id>-<slug>`，於分支上 commit。
-- 批量：cc 可一次處理 N 筆工單，逐筆切分支、各自拆 commit，互不污染。
-- task 分支與 develop 的 push、merge 皆由人操作。
-
-## 7. pull / push
+## 7. pull / push（通用）
 
 - cc commit 前只 `git fetch` + 落後提醒，**不自動 pull**。
 - `git pull --rebase` 在**手動 push 前**做。
 - **cc 只 commit、不 push**；push 由人操作。
-- 禁止直接在 `main` / `master` 開發或 push；非預期分支要警告。
+- 不在 `git-project.md` 允許的分支上 commit 時要警告並先問用戶。
 
 ## 8. 選用
 
 - `Co-Authored-By: Claude …` footer：**預設不加**（與原格式一致）；團隊要署名再開啟。
 
-## 9. 自動化：`/wp-commit` skill（待建）
+## 9. 自動化
 
-呼叫後 cc：檢查 repo/分支 + fetch 提醒 → 切/確認工單分支 → 依 §4 拆組、標資產/.meta → 依 §1~3 產【commit 清單 + log 預覽】等確認 → 確認後逐筆 commit（資產需額外點頭）→ 提示 push 由人、先 `pull --rebase`。
+- `git` skill（「git commit 本次內容」）：從雜亂工作區只挑出某個功能的改動來提交，review 在 commit 之前；分支依 `git-project.md`。
+- 待建：`/wp-commit` skill。呼叫後 cc：檢查 repo/分支 + fetch 提醒 → 切/確認工單分支 → 依 §4 拆組、標資產/.meta → 依 §1~3 產【commit 清單 + log 預覽】等確認 → 確認後逐筆 commit（資產需額外點頭）→ 提示 push 由人、先 `pull --rebase`。

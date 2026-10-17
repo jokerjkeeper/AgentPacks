@@ -1,10 +1,11 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": "codegraph",
   "name": "CodeGraph 索引",
-  "version": "1.0.0",
-  "description": "為專案啟用 CodeGraph 程式碼知識圖譜：放入 .codegraph/.gitignore、在 CLAUDE.md 加使用說明，可選擇立即建立索引。CLI 與 MCP 屬全機設定，不在此 pack 範圍（用 /code-intel 或 codegraph install）。",
+  "version": "1.1.0",
+  "description": "為專案啟用 CodeGraph 程式碼知識圖譜：放入 .codegraph/.gitignore、在 AGENTS.md 加使用說明（claude / codex / opencode 共讀），可選擇立即建立索引。CLI 與 MCP 屬全機設定，不在此 pack 範圍（用 /code-intel 或 codegraph install）。",
   "tags": ["code-intel", "index"],
+  "requires_packs": ["agent-env"],
   "requires_tools": [
     { "name": "codegraph", "cmd": "codegraph --version", "hint": "未安裝 CodeGraph CLI：npm i -g @colbymchenry/codegraph 後執行 codegraph install（全機一次）", "optional": true }
   ],
@@ -12,7 +13,7 @@
   "presets": {},
   "files": [
     { "path": ".codegraph/.gitignore", "mode": "seed" },
-    { "path": "CLAUDE.md", "source": "blocks/CLAUDE.md", "mode": "block" }
+    { "path": "AGENTS.md", "source": "blocks/AGENTS.md", "mode": "block" }
   ],
   "post_install": [
     {

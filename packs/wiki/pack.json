@@ -1,10 +1,11 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": "wiki",
   "name": "程式 Wiki",
-  "version": "1.0.0",
-  "description": "cr-daily 每日 code review → curate 策展 → wiki 知識庫，附 /stopic /ask /resolve /cr-planfix 與每日前置規劃器。",
+  "version": "2.0.0",
+  "description": "cr-daily 每日 code review → curate 策展 → wiki 知識庫，附 stopic / ask / resolve / cr-planfix skill 與每日前置規劃器。skill 本體放 .agent/capabilities/skills/，claude / codex / opencode 共用（需 agent-env）。",
   "tags": ["wiki", "code-review", "knowledge"],
+  "requires_packs": ["agent-env"],
   "requires_tools": [
     { "name": "git", "cmd": "git --version", "hint": "需要 git（cr_collect 讀 commit 歷史）" },
     { "name": "python", "cmd": "python --version", "hint": "需要 Python 3.8+（腳本只用標準庫）" }
@@ -50,21 +51,16 @@
       }
     }
   },
+  "legacy": [".claude/skills/cr-daily/", ".claude/skills/cr-planfix/", ".claude/skills/curate/", ".claude/skills/stopic/", ".claude/skills/ask/", ".claude/skills/resolve/", ".codex/skills/cr-daily/", ".codex/skills/cr-planfix/", ".codex/skills/curate/", ".codex/skills/stopic/", ".codex/skills/ask/", ".codex/skills/resolve/", ".claude/commands/curate.md", ".claude/commands/stopic.md", ".claude/commands/ask.md", ".claude/commands/resolve.md"],
+  "skills": ["cr-daily", "cr-planfix", "curate", "stopic", "ask", "resolve"],
+  "specs": [
+    { "file": "wiki.md", "title": "Wiki 知識頁 / 狀態檔 / 權威分級", "load": "ondemand", "when": "跑 curate、resolve，或手動改 wiki/ 時" },
+    { "file": "recon.md", "title": "工單偵察 SOP（wiki + codegraph 雙查詢）", "load": "auto", "mode": "seed", "when": "接到工單或需求、要定位 code 時：先 stopic 圈範圍，再用 codegraph 追符號，最後回 code 核對" }
+  ],
   "files": [
-    { "path": ".claude/skills/cr-daily/SKILL.md", "mode": "managed" },
-    { "path": ".claude/skills/cr-daily/cr_collect.py", "mode": "managed" },
-    { "path": ".claude/skills/cr-planfix/SKILL.md", "mode": "managed" },
-    { "path": ".claude/skills/cr-planfix/extract_risks.py", "mode": "managed" },
-    { "path": ".claude/commands/curate.md", "mode": "managed" },
-    { "path": ".claude/commands/stopic.md", "mode": "managed" },
-    { "path": ".claude/commands/ask.md", "mode": "managed" },
-    { "path": ".claude/commands/resolve.md", "mode": "managed" },
     { "path": ".agent/scripts/build_index.py", "mode": "managed" },
     { "path": ".agent/scripts/daily_preflight.py", "mode": "managed" },
     { "path": ".agent/scripts/daily_preflight.bat", "mode": "managed" },
-    { "path": ".agent/spec/wiki.md", "mode": "managed" },
-    { "path": ".agent/spec/recon.md", "mode": "seed" },
-    { "path": ".agent/spec/git.md", "mode": "seed" },
     { "path": ".agent/spec/modules.json", "mode": "seed" },
     { "path": ".agent/config.json", "source": "files/.agent/config.json.tmpl", "mode": "seed", "template": true },
     { "path": ".agent/codereview", "mode": "dir" },
@@ -74,7 +70,7 @@
     { "path": "raw/tickets", "mode": "dir" },
     { "path": "raw/spec", "mode": "dir" },
     { "path": "wiki/INDEX.md", "mode": "seed" },
-    { "path": "CLAUDE.md", "source": "blocks/CLAUDE.md", "mode": "block" },
+    { "path": "AGENTS.md", "source": "blocks/AGENTS.md", "mode": "block" },
     { "path": ".gitignore", "source": "blocks/.gitignore", "mode": "block" }
   ],
   "post_install": []

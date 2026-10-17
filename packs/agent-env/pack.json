@@ -1,0 +1,36 @@
+{
+  "schema": 2,
+  "id": "agent-env",
+  "name": "Agent 環境（claude / codex / opencode）",
+  "version": "1.0.0",
+  "description": "建立跨 agent 的專案結構：AGENTS.md 索引（codex / opencode 原生讀，Claude 經 CLAUDE.md 的 @AGENTS.md 匯入）、.agent/spec 規範目錄、.agent/capabilities/skills 共用 skill 本體；依勾選的 agent 產生 .claude/skills、.agents/skills 或 .opencode/skills 薄入口。其他 pack 的 skill / 規範都裝進這套結構。",
+  "tags": ["agent", "codex", "opencode", "base"],
+  "requires_tools": [
+    { "name": "python", "cmd": "python --version", "hint": "沒有 launcher 時用 python .agent/scripts/sync_agent_skills.py 重生入口（可選）", "optional": true }
+  ],
+  "params": [
+    { "key": "project", "label": "專案名稱", "type": "string", "default": "{{dirname}}", "help": "只用於 AGENTS.md 標題（AGENTS.md 已存在時不會改寫）" },
+    {
+      "key": "agents",
+      "label": "支援的 agent",
+      "type": "multi",
+      "default": ["claude"],
+      "options": [
+        { "value": "claude", "label": "Claude Code（.claude/skills）" },
+        { "value": "codex", "label": "Codex（.agents/skills）" },
+        { "value": "opencode", "label": "OpenCode（相容讀 .claude/skills、.agents/skills；只勾它時產生 .opencode/skills）" }
+      ],
+      "help": "改選後重新安裝本 pack，launcher 會增刪各家入口"
+    }
+  ],
+  "presets": {},
+  "files": [
+    { "path": "AGENTS.md", "source": "files/AGENTS.md.tmpl", "mode": "seed", "template": true },
+    { "path": "CLAUDE.md", "source": "blocks/CLAUDE.md", "mode": "block" },
+    { "path": ".agent/agent-env.json", "source": "files/.agent/agent-env.json.tmpl", "mode": "managed", "template": true },
+    { "path": ".agent/scripts/sync_agent_skills.py", "mode": "managed" },
+    { "path": ".agent/spec", "mode": "dir" },
+    { "path": ".agent/capabilities/skills", "mode": "dir" }
+  ],
+  "post_install": []
+}

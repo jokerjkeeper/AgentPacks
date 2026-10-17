@@ -1,7 +1,7 @@
 # Wiki 規格（agent 依據・canonical）
 
 > 知識頁的結構、拆檔門檻、feature 命名、狀態檔 schema 與驗證閉環。供 `/curate`、`/ask`、`/resolve`、`/stopic` 遵循。
-> 由 `CLAUDE.md`（AgentPacks 區塊）索引。路徑一律讀 `.agent/config.json` 的 `paths`（以下 `<WIKI>`、`<STATE>` 等皆指 repo 相對路徑）。
+> 由 `AGENTS.md`（AgentPacks 索引區塊）索引。路徑一律讀 `.agent/config.json` 的 `paths`（以下 `<WIKI>`、`<STATE>` 等皆指 repo 相對路徑）。
 > 由 AgentPacks wiki pack 提供（pack 更新會覆蓋本檔）；頁名前綴讀 `config.wiki.page_prefix`（預設 `主題-`）。
 
 ## 1. 頁面分層（單檔同時服務人與 AI，不做兩份）

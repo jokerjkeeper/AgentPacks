@@ -1,6 +1,13 @@
+---
+name: ask
+description: 知識庫問答：只讀 wiki/ 回答問題，標明依據頁與可信度，依據不足時寫入 review_queue。當用戶呼叫 /ask <問題> 時觸發。
+version: 2.0.0
+origin: agentpacks/wiki
+---
+
 # /ask — 知識庫問答
 
-讀 `wiki/` 回答問題 `$ARGUMENTS`。
+讀 `wiki/` 回答使用者的問題。
 
 ## 0. 讀路徑
 

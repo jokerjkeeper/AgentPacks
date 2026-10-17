@@ -26,6 +26,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+CANONICAL_COLLECTOR = ".agent/capabilities/skills/cr-daily/cr_collect.py"
 
 
 def load_config() -> dict:
@@ -74,7 +75,10 @@ def last_reviewed_date(paths: dict) -> tuple:
 
 def collect(paths: dict, ref: str, rng) -> tuple:
     """呼叫 cr_collect.py，回傳 (成功與否, JSON 或錯誤行)。"""
-    collector = paths.get("collector") or ".claude/skills/cr-daily/cr_collect.py"
+    collector = paths.get("collector") or CANONICAL_COLLECTOR
+    if not (REPO_ROOT / collector).is_file() and (REPO_ROOT / CANONICAL_COLLECTOR).is_file():
+        # 舊版 config 指向 .claude/skills/cr-daily/（wiki v1），已遷移到 canonical 位置
+        collector = CANONICAL_COLLECTOR
     cmd = [sys.executable, str(REPO_ROOT / collector), "--ref", ref]
     cmd += ["--range", rng] if rng else ["--head-only"]
     try:

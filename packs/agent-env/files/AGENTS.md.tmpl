@@ -1,0 +1,28 @@
+# AGENTS.md — {{project}} 指令索引
+
+> 跨工具指令檔。codex / opencode 原生讀本檔；Claude Code 經 `CLAUDE.md` 的 `@AGENTS.md` 匯入。
+> 本檔只做索引，不重複規範內容；下方 `agentpacks:index` 區塊由 Agent 套件自動維護，勿手改。
+
+## 回應語言
+
+- AI 一律以**繁體中文**回覆。
+
+## 目錄約定
+
+| 位置 | 用途 |
+|---|---|
+| `.agent/spec/` | 規範本體（單一真相來源）。新增規範：在這裡加檔，再到下方「專案自訂規範」加一列 |
+| `.agent/capabilities/skills/<name>/` | 共用 skill 本體（SKILL.md、腳本、references 只在這裡改） |
+| `.claude/skills/`、`.agents/skills/`、`.opencode/skills/` | 自動產生的 skill 入口，勿手改（注意：Codex 用的是複數 `.agents/`，與 `.agent/` 不同） |
+| `.agent/agent-env.json` | 本專案啟用哪些 agent |
+| `.agent/agent-packs.lock.json` | Agent 套件安裝紀錄 |
+
+## 專案自訂規範
+
+不屬於 Agent 套件、由本專案自己維護的規範列在這裡（需要每次 session 載入的，另在表下加一行 `@.agent/spec/<檔名>`，供 Claude Code 匯入）。
+
+| 規範 | 檔案 | 載入 | 什麼時候要讀 |
+|---|---|---|---|
+
+<!-- agentpacks:index:start -->
+<!-- agentpacks:index:end -->

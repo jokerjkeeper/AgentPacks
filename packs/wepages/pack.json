@@ -1,9 +1,10 @@
 {
-  "schema": 1,
+  "schema": 2,
   "id": "wepages",
   "name": "WePages 工單（task 綁定）",
-  "version": "1.0.0",
-  "description": "把本目錄綁定到 WePages 的一批 task（WEPAGES_TASK_IDS 白名單）：產生 .claude/api.conf 與 claude_spc_wepages.md，搭配 /wp-attach、/wp-cleanup。與 taskhub pack 寫同一組檔案，兩者擇一。",
+  "version": "1.1.0",
+  "description": "把本目錄綁定到 WePages 的一批 task（WEPAGES_TASK_IDS 白名單）：產生 .claude/api.conf 與 .agent/spec/wepages.md，搭配 /wp-attach、/wp-cleanup。與 taskhub pack 寫同一組檔案，兩者擇一。",
+  "requires_packs": ["agent-env"],
   "tags": ["wepages", "ticket"],
   "requires_tools": [
     { "name": "curl", "cmd": "curl --version", "hint": "需要 curl 呼叫 REST API" }
@@ -16,9 +17,12 @@
     { "key": "project_name", "label": "項目名稱註記", "type": "string", "default": "{{dirname}}" }
   ],
   "presets": {},
+  "legacy": [".claude/claude_specs/claude_spc_wepages.md"],
+  "specs": [
+    { "file": "wepages.md", "title": "WePages / TaskHub 工單 API", "load": "ondemand", "when": "查詢、建立、更新工單或驗收清單時" }
+  ],
   "files": [
-    { "path": ".claude/api.conf", "source": "files/.claude/api.conf.tmpl", "mode": "seed", "template": true },
-    { "path": ".claude/claude_specs/claude_spc_wepages.md", "mode": "managed" }
+    { "path": ".claude/api.conf", "source": "files/.claude/api.conf.tmpl", "mode": "seed", "template": true }
   ],
   "post_install": []
 }
