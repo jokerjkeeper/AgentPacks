@@ -1,20 +1,20 @@
 {
   "version": 3,
   "project": {{project}},
-  "_note": "agent 引擎設定（單一權威來源，AgentPacks wiki pack 產生；之後可手改，pack 更新不會覆蓋本檔）。所有路徑皆相對 repo 根目錄，指令與腳本一律從這裡讀，不得硬編。",
+  "_note": "agent 引擎設定（單一權威來源，AgentPacks wiki pack 產生；之後可手改。重新安裝 wiki pack 只會同步 project / paths.code_roots / collect.* 這幾個參數欄位，其餘手改內容保留）。所有路徑皆相對 repo 根目錄，指令與腳本一律從這裡讀，不得硬編。",
   "_keys": {
     "paths.raw": "人工投放的原始來源（tickets/ spec/），/curate 讀取",
     "paths.state": "策展狀態檔目錄（manifest / features / review_queue / cr_cursor）",
     "paths.wiki": "知識庫輸出目錄（主題頁 + INDEX.md）",
     "paths.outputs": "查詢結果、待驗清單、preflight digest（建議 gitignore）",
-    "paths.code_roots": "程式碼根目錄（可多個）；/curate 驗證 spec 行號、/resolve 讀 code 驗證時的範圍",
+    "paths.code_roots": "程式碼根目錄（可多個，空 = 不限）；cr_collect 只收這些目錄，/curate 驗證 spec 行號、/resolve 讀 code 驗證時的範圍。launcher 依 .agent/layout.json 偵測，重新安裝 wiki pack 會同步本欄",
     "paths.codereview_src": "/curate 讀取 cr-daily (b) 知識素材的位置",
     "paths.codereview_out": "cr-daily 寫入 (b) 知識素材的位置（合併模式下與 codereview_src 相同）",
     "paths.docs_codereview": "cr-daily (a) 工程回顧報告（含 bug / 評價，建議 gitignore）",
     "paths.agent_raw_codereview": "拆解模式才設：外部 wiki repo 的攝取 inbox；null = 合併模式",
     "paths.cursor": "cr-daily 向前 review 游標",
     "collect.code_exts": "cr_collect 只收這些副檔名",
-    "collect.excludes": "cr_collect 排除的路徑片段（不分大小寫、正斜線；/ 開頭從 repo 根比對）",
+    "collect.excludes": "cr_collect 排除的路徑片段（不分大小寫、正斜線；/dist/ 比對任何層的 dist 目錄，也可寫檔名片段如 .min.js）",
     "collect.ref": "cr_collect / daily_preflight 預設 review 的 git 參照（例 origin/main）",
     "categories": "cr-daily (b) 素材的「分類」詞表與 /curate 的分流去向（route: player / engineering / tool）",
     "wiki.page_prefix": "主題頁檔名前綴（build_index 只掃這個前綴）"

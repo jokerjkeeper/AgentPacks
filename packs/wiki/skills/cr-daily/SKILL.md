@@ -72,8 +72,12 @@ origin: project
 python <COLLECT> <模式參數>
 ```
 
-拿到 JSON：`{ days: [{date, commit_range, commit_count, commits:[{sha, subject, files:[{path,status,rename_only}]}]}], head_sha, head_date }`。
+拿到 JSON：`{ days: [{date, commit_range, commit_count, commits:[{sha, subject, files:[{path,status,rename_only}]}]}], head_sha, head_date, code_roots, skipped: {by_ext, outside_roots, excluded} }`。
 diff 不在 JSON 裡——下一步自己抓。
+
+**收集範圍檢查**（開始 review 前）：
+- stderr 有 `[WARN] code_roots ...不存在` → 提醒用戶到 launcher 重新安裝 wiki pack（會依 `.agent/layout.json` 重新偵測 `code_roots`），本次照跑。
+- `skipped.by_ext`（副檔名不在 `collect.code_exts` 的程式檔）或 `skipped.outside_roots`（`code_roots` 以外有程式檔變更，依頂層目錄計）明顯偏多（例：被濾掉的程式檔 ≥ 收到的檔數）→ 先列出數字問用戶要不要補 config（或重新安裝 wiki pack），**不要自行改 config**。
 
 ### Step 3：逐日處理（順跑，不平行）
 
@@ -204,7 +208,7 @@ tags: [code-review]
 
 ## 注意事項
 
-- collector 已依 config `collect.code_exts` / `collect.excludes` 過濾（生成碼、第三方、建置產物等）；你拿到的都是該 review 的程式檔。過濾不對就改 config，不要在本流程手動跳檔。
+- collector 已依 config `paths.code_roots` / `collect.code_exts` / `collect.excludes` 過濾（非程式目錄、生成碼、第三方、建置產物等）；你拿到的都是該 review 的程式檔。過濾不對就改 config（或 launcher 重新安裝 wiki pack），不要在本流程手動跳檔。
 - 批次大區間（如補 3 個月）：**逐月順跑**，靠「(a) 檔存在即跳過」冪等，中斷後重跑會自動接續。
 - 一天一檔；若一次 catch up 跨多日，會產生多個 dated 檔（符合「一天一檔」，wiki 端對賬才對得準）。
 - 寫 (b) 前先 `ls CODEREVIEW_OUT`（本 repo 目錄，不存在可建）；導入前 `ls AGENT_RAW`（未設/不存在則略過導入）。

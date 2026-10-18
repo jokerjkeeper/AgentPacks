@@ -10,7 +10,7 @@ Launcher 預設從本 GitHub repo 取得最新 pack，並內建一份快照供�
 
 | id | 名稱 | 內容 |
 |----|------|------|
-| `agent-env` | Agent 環境 | **基礎套件**：`AGENTS.md` 索引（seed）、`CLAUDE.md` 的 `@AGENTS.md` 區塊、`.agent/agent-env.json`（勾選的 agent）、`.agent/spec/`、`.agent/capabilities/skills/`、`sync_agent_skills.py`。其他 pack 都依賴它 |
+| `agent-env` | Agent 環境 | **基礎套件**：`AGENTS.md` 索引（seed）、`CLAUDE.md` 的 `@AGENTS.md` 區塊、`.agent/agent-env.json`（勾選的 agent）、`.agent/layout.json`（seed，頂層非程式目錄約定，見 `spec/layout.md`）、`.agent/spec/`、`.agent/capabilities/skills/`、`sync_agent_skills.py`。其他 pack 都依賴它 |
 | `wiki` | 程式 Wiki | `cr-daily` 每日 code review → `curate` 策展 → `wiki/` 知識庫；`stopic` `ask` `resolve` `cr-planfix` skill；每日前置規劃器 |
 | `codegraph` | CodeGraph 索引 | `.codegraph/.gitignore`、AGENTS.md 使用說明、可選 `codegraph init` |
 | `git-spec` | Git 提交規範 | `.agent/spec/git.md`（通用：`[type][模組]` 格式、分組規則）、`git-project.md`（seed，專案自有的分支策略）、`modules.json`（seed）、`git` skill |
@@ -56,9 +56,9 @@ packs/<id>/
 | `skills[]` | skill 名稱，來源 `skills/<name>/`；裝成 managed 檔，並依目標的 agent-env 產生各家入口 |
 | `specs[]` | `{ file, title, load: auto\|ondemand, when, mode?, template? }`：來源 `specs/<file>`，`mode` 預設 managed；寫入 AGENTS.md 索引表，`auto` 另加 `@` 匯入行 |
 | `requires_tools[]` | `{ name, cmd, hint, optional }`：安裝前檢查的外部工具（`cmd` 結束碼 0 即通過） |
-| `params[]` | `{ key, label, type: string\|list\|multi, options?, default, help, required, secret }`（`multi` 為多選，`options: [{ value, label }]`）；`default` 可用 `{{dirname}}`（目標資料夾名）；`required: false` 允許留空；`secret: true` 以密碼框輸入且不寫入 lock（token 用） |
+| `params[]` | `{ key, label, type: string\|list\|multi, options?, default, help, required, secret }`（`multi` 為多選，`options: [{ value, label }]`）；`default` 可用 `{{dirname}}`（目標資料夾名）；`required: false` 允許留空；`secret: true` 以密碼框輸入且不寫入 lock（token 用）；`detect: code_roots\|code_exts` 由 launcher 掃描目標 repo 自動帶入（依 `.agent/layout.json`，見下方「程式碼偵測」） |
 | `presets{}` | `{ <id>: { label, values: { key: value } } }`：依專案類型帶入參數預設值 |
-| `files[]` | `{ path, source?, mode, template? }`，見下表；`source` 相對 pack 目錄，預設 `files/<path>` |
+| `files[]` | `{ path, source?, mode, template?, sync? }`，見下表；`source` 相對 pack 目錄，預設 `files/<path>`；`sync`（僅 seed 的 .json 模板）列出重新安裝時要以新參數覆寫的 JSON 路徑（例 `paths.code_roots`），其餘欄位保留專案手改 |
 | `post_install[]` | `{ id, label, check, skip_if_exists, run: [argv…], default }`：安裝後可勾選執行的指令 |
 
 ### 檔案模式
@@ -66,13 +66,22 @@ packs/<id>/
 | mode | 行為 |
 |------|------|
 | `managed` | pack 擁有。更新時：目標檔未被手改（hash 與 lock 相同）→ 覆蓋；被手改過 → 另存 `<檔名>.pack-new`，不覆蓋 |
-| `seed` | 只在目標不存在時建立，之後歸專案所有（config、modules.json、狀態檔、wiki/INDEX.md） |
+| `seed` | 只在目標不存在時建立，之後歸專案所有（config、modules.json、狀態檔、wiki/INDEX.md）；有 `sync` 時重新安裝只同步那幾個 JSON 欄位 |
 | `block` | 以 `<!-- agentpacks:<id>:start/end -->`（.md）或 `# agentpacks:<id>:start/end`（其他）標記區塊插入或替換，不動區塊外內容；新版不再宣告的區塊會被移除 |
 | `dir` | 只建立空目錄（不需來源檔；不要用 `.gitkeep`，electron-builder 打包時會濾掉） |
 
 ### 模板
 
 `template: true` 的檔案做 `{{key}}` 替換：`.json` 檔內的值以 JSON 輸出（字串含引號、清單為陣列），其他檔案字串原樣、清單輸出 JSON。可用變數：所有 `params` 與 `{{target}}`、`{{dirname}}`。
+
+## 程式碼偵測（code_roots）
+
+各專案的程式不一定在 `src/`，也常是多語言混合。agent-env 在目標專案放一份 `.agent/layout.json`（seed，可依專案增減）：
+
+- `reserved_dirs`：頂層**非程式**目錄（`.*` 代表所有點開頭目錄，另有 `design` `aispec` `docs` `temp` `raw` `wiki` `outputs` `spec`、建置產物等）
+- `source_exts`：視為程式碼的副檔名
+
+launcher 選到有 `detect` 參數的 pack（wiki）時，以 `git ls-files`（非 git repo 則走訪目錄）掃描目標，扣掉 reserved 與 `excludes` 後，**含程式檔的頂層目錄 = `code_roots`、出現的程式副檔名 = `code_exts`**。新安裝自動帶入；已安裝則在表單顯示偵測結果與差異（目錄不存在、漏收的目錄 / 副檔名），按「套用偵測結果」再重新安裝即可同步 `.agent/config.json`。
 
 ## 安裝紀錄
 

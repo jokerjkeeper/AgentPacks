@@ -2,8 +2,8 @@
   "schema": 2,
   "id": "agent-env",
   "name": "Agent 環境（claude / codex / opencode）",
-  "version": "1.0.0",
-  "description": "建立跨 agent 的專案結構：AGENTS.md 索引（codex / opencode 原生讀，Claude 經 CLAUDE.md 的 @AGENTS.md 匯入）、.agent/spec 規範目錄、.agent/capabilities/skills 共用 skill 本體；依勾選的 agent 產生 .claude/skills、.agents/skills 或 .opencode/skills 薄入口。其他 pack 的 skill / 規範都裝進這套結構。",
+  "version": "1.1.0",
+  "description": "建立跨 agent 的專案結構：AGENTS.md 索引（codex / opencode 原生讀，Claude 經 CLAUDE.md 的 @AGENTS.md 匯入）、.agent/spec 規範目錄、頂層目錄約定（.agent/layout.json，非程式目錄清單）、.agent/capabilities/skills 共用 skill 本體；依勾選的 agent 產生 .claude/skills、.agents/skills 或 .opencode/skills 薄入口。其他 pack 的 skill / 規範都裝進這套結構。",
   "tags": ["agent", "codex", "opencode", "base"],
   "requires_tools": [
     { "name": "python", "cmd": "python --version", "hint": "沒有 launcher 時用 python .agent/scripts/sync_agent_skills.py 重生入口（可選）", "optional": true }
@@ -24,7 +24,11 @@
     }
   ],
   "presets": {},
+  "specs": [
+    { "file": "layout.md", "title": "專案目錄約定（非程式目錄）", "load": "auto", "when": "新增頂層目錄、放文件 / 設計稿 / 暫存檔，或判斷哪裡是程式碼時" }
+  ],
   "files": [
+    { "path": ".agent/layout.json", "mode": "seed" },
     { "path": "AGENTS.md", "source": "files/AGENTS.md.tmpl", "mode": "seed", "template": true },
     { "path": "CLAUDE.md", "source": "blocks/CLAUDE.md", "mode": "block" },
     { "path": ".agent/agent-env.json", "source": "files/.agent/agent-env.json.tmpl", "mode": "managed", "template": true },
