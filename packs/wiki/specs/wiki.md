@@ -74,7 +74,7 @@ git commit 的模組 tag = 本檔「模組層」。功能層只存在於 wiki / 
 
 **路由表 `<WIKI>/INDEX.md`**：
 - 每個主題頁一列：`模組｜摘要｜features｜別名｜頁面｜權威`。**摘要 + features + 別名**是 LLM 判斷相關性的素材。
-- **由 `.agent/scripts/build_index.py` 從各 `主題-*.md` frontmatter 自動生成，禁止手改**；頁面變動後重跑（`/curate` 收尾亦會重生）。`--check` 可在提交前驗證是否過期。
+- **由 `.agent/scripts/build_index.py` 從各 `主題-*.md` frontmatter 自動生成，禁止手改**（若 INDEX.md 有 `<!-- AUTO-INDEX:START … -->` / `<!-- AUTO-INDEX:END -->` 標記，只改寫標記之間，標記外的手寫路由保留）；頁面變動後重跑（`/curate` 收尾亦會重生）。`--check` 可在提交前驗證是否過期。
 
 **`/stopic <關鍵詞>`**：讀 INDEX → 語意判讀（不限字面命中）→ 多頁召回（一個需求常橫跨數模組，如「掉寶太少」→ 戰鬥 + 掉落 + 關卡資料）→ 載入供需求分析。
 

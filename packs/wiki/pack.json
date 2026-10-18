@@ -2,7 +2,7 @@
   "schema": 2,
   "id": "wiki",
   "name": "程式 Wiki",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "cr-daily 每日 code review → curate 策展 → wiki 知識庫，附 stopic / ask / resolve / cr-planfix skill 與每日前置規劃器。skill 本體放 .agent/capabilities/skills/，claude / codex / opencode 共用（需 agent-env）。",
   "tags": ["wiki", "code-review", "knowledge"],
   "requires_packs": ["agent-env"],

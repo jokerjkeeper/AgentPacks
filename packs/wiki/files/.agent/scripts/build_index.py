@@ -3,6 +3,7 @@
 """build_index.py — 從 wiki/<前綴>*.md 的 frontmatter 生成 wiki/INDEX.md 路由表（AgentPacks / wiki pack）。
 
 INDEX.md 是 /stopic 的 LLM 判讀素材（模組｜摘要｜features｜別名｜頁面｜權威），禁止手改。
+INDEX.md 若有 `<!-- AUTO-INDEX:START … -->` / `<!-- AUTO-INDEX:END -->` 標記，只改寫標記之間，標記外的手寫路由保留。
 
 用法：
     python .agent/scripts/build_index.py           # 重生 INDEX.md
@@ -20,6 +21,9 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_PREFIX = "主題-"
+# INDEX.md 上半部若有手寫路由，用這組標記圈出自動區塊；標記行後面可加說明文字
+AUTO_START_PREFIX = "<!-- AUTO-INDEX:START"
+AUTO_END = "<!-- AUTO-INDEX:END -->"
 
 
 def load_settings() -> tuple:
@@ -134,6 +138,21 @@ def build(wiki: Path, prefix: str) -> tuple:
     return "\n".join(lines), len(rows), warns
 
 
+def merge(current, content: str) -> str:
+    """INDEX.md 有 AUTO-INDEX 標記時只換標記內（保留標記外的手寫路由），否則整份使用生成內容。"""
+    if current is None:
+        return content
+    start = current.find(AUTO_START_PREFIX)
+    end = current.find(AUTO_END, start + 1) if start >= 0 else -1
+    if start < 0 or end < 0:
+        return content
+    start_line_end = current.find("\n", start)
+    if start_line_end < 0 or start_line_end > end:
+        return content
+    body = content.split("\n", 2)[2] if content.startswith("# ") else content   # 去掉生成內容的標題，標記外已有標題
+    return current[:start_line_end + 1] + "\n" + body.rstrip("\n") + "\n\n" + current[end:]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="生成 wiki/INDEX.md 路由表")
     parser.add_argument("--check", action="store_true", help="只檢查 INDEX.md 是否過期")
@@ -152,6 +171,7 @@ def main() -> int:
     except OSError as error:
         print(f"[ERR] 無法讀取 {index_path}：{error}", file=sys.stderr)
         return 2
+    content = merge(current, content)
 
     if args.check:
         if current != content:
