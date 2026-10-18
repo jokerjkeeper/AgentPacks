@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "_note": "模組層受控詞表（單一權威來源）。三處共用：(1) /curate 的 features.json 模組層封閉詞表（feature 鍵 = <name>/<功能>，見 .agent/spec/wiki.md §3~§4）(2) git commit 的模組 tag（.agent/spec/git.md §3）(3) cr-planfix extract_risks.py 的風險分類。新增模組只改本檔。初始只有「系統」，隨 /curate 回報的 module_provisional 逐步補齊。",
+  "_note": "模組層受控詞表（單一權威來源）。三處共用：(1) /curate 的 features.json 模組層封閉詞表（feature 鍵 = <name>/<功能>，見 .agent/spec/wiki.md §3~§4）(2) git commit 的模組 tag（.agent/spec/git.md §3）(3) cr-planfix extract_risks.py 的風險分類。新增模組只改本檔。初始只有「系統」（＝ agent / 專案設定，不是產品程式）；首次 /curate 會依 code_roots 與 codereview 提案產品模組清單、經用戶確認後寫入，之後再由 module_provisional 逐步補齊。模組 name 不可與 config categories[].name 相同。",
   "_schema": {
     "name": "canonical 短模組名。= /curate 指派的 features.json module = git [模組] tag = wiki system = feature 鍵前綴（例 戰鬥/技能）。唯一、穩定、勿輕改。",
     "key": "英文 slug。cr-planfix 輸出檔名、程式內部識別用。",

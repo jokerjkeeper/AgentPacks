@@ -20,13 +20,19 @@ origin: agentpacks/wiki
 ## 執行步驟
 
 1. **讀狀態**：`<STATE>/manifest.json`、`features.json`、`review_queue.json`。
+   - **首次策展（模組詞表初始化）**：`manifest` 為空且 `<MODULES>` 只有 seed 的初始模組（`系統`＝agent / 專案設定）時，先**不寫任何 wiki**：
+     1. 依 `paths.code_roots` 的目錄結構（含次層目錄）＋本批 codereview 的 `feature 提示` / `檔案` 路徑，提出**產品模組清單**（每筆 `name` / `key` / `label` / `aliases` / `path_hints`，粗粒度、通常 4~10 個；名稱不可與 config `categories[].name` 相同）。
+     2. 用一次提問給用戶確認 / 調整（附「模組 → 涵蓋目錄 / 代表 feature」對照）。
+     3. 確認後寫入 `<MODULES>`（保留原有模組，新模組依 `_order` 規則插在 `系統` 之前），再開始 step 2 正常策展。
+   - 非首次策展時，遇到落不進模組的內容才走 step 5 的 `module_provisional` 流程。
 2. **找增量**：遍歷 `<CODEREVIEW_SRC>/*.md`（codereview，cr-daily 的 (b) 產出直讀）與 `<RAW>/**/*.md`（看 `tickets/`、`spec/`），每檔算 sha256 與 manifest 比對（新增 / 變更 / 跳過）。
 3. **路由（codereview / ticket / spec）**：
    - **codereview 依 `分類` 分流**（避免工程內部污染功能 wiki）；分類詞表與去向見 config `categories[]`（`route` 欄位）：
-     - `route: player` → 玩家 / 使用者面向主題頁
-     - `route: engineering` → 工程主題頁（`system:` 用該分類名，如 `系統` / `渲染`，與功能頁隔離）
+     - `route: player` → 使用者面向的模組主題頁（`system:` = 該 feature 的模組，取自 `<MODULES>`）
+     - `route: engineering` → 工程主題頁（`system:` 用該分類名，如 `架構` / `渲染`，與功能頁隔離）
      - `route: tool` → 工具主題頁（`system: 工具`）
      - 所有分類**都納入**，靠 `system:` 隔離，不丟棄。
+     - 分類名與模組名共用 `system:` 命名空間：若 config 的分類名與 `<MODULES>` 某模組 `name` 相同（舊版預設「系統」會撞名），**停下回報**，建議改 config 分類名（例 `系統` → `架構`），不要自行決定歸屬。
    - **ticket** → 可復用技術知識抽進 `wiki/` 主題頁；若該工單為明確「決策 / 進度串」，得另記其時序（佈告欄為選用，預設併入主題頁 `> 來源`，本系統不強制建佈告欄區）。
    - **spec（功能設計 / 架構文檔，閱讀層骨幹）** → 與 codereview（每日 diff、補充細點）性質不同：
      - spec **主餵閱讀層**（功能概述 / 設計規則 / 架構決策），歸入對應模組主題頁的新或既有 feature；模組層仍走 `<MODULES>` 封閉詞表（step 5）。

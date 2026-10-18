@@ -2,7 +2,7 @@
   "schema": 2,
   "id": "wiki",
   "name": "程式 Wiki",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "cr-daily 每日 code review → curate 策展 → wiki 知識庫，附 stopic / ask / resolve / cr-planfix skill 與每日前置規劃器。skill 本體放 .agent/capabilities/skills/，claude / codex / opencode 共用（需 agent-env）。",
   "tags": ["wiki", "code-review", "knowledge"],
   "requires_packs": ["agent-env"],
@@ -15,12 +15,14 @@
     { "key": "code_roots", "label": "程式碼根目錄", "type": "list", "default": [], "detect": "code_roots", "help": "repo 相對路徑，可多個；launcher 依 .agent/layout.json（非程式目錄約定）自動偵測，空 = 不限目錄" },
     { "key": "code_exts", "label": "收集副檔名", "type": "list", "default": [".cs", ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs", ".vue", ".svelte", ".py", ".go", ".rs", ".java", ".kt", ".swift", ".c", ".cc", ".cpp", ".h", ".hpp", ".m", ".mm", ".lua", ".php", ".rb", ".dart", ".gd"], "detect": "code_exts", "help": "只收這些副檔名（用來濾掉 .md / .json / .meta / 圖片等非程式變更）；自動偵測帶入 .agent/layout.json 的完整程式副檔名，之後新增語言也收得到" },
     { "key": "excludes", "label": "排除路徑片段", "type": "list", "default": ["/node_modules/", "/dist/", "/build/", "/out/", "/coverage/", "/.venv/", "/venv/", "/__pycache__/", "/plugins/", "/thirdparty/", "/third_party/", "/vendor/", "/.next/", "/.nuxt/", "/.vite/", ".min.js"], "help": "code_roots 內再排除的依賴 / 產物 / 第三方：路徑片段比對、不分大小寫（/dist/ 比對任何層的 dist 目錄；也可寫檔名片段如 .min.js）" },
-    { "key": "branch", "label": "預設 review 參照", "type": "string", "default": "HEAD", "help": "例 origin/main、origin/develop；自動化建議用遠端分支" }
+    { "key": "branch", "label": "預設 review 參照", "type": "string", "default": "HEAD", "help": "例 origin/main、origin/develop；自動化建議用遠端分支" },
+    { "key": "categories", "label": "分類詞表", "type": "json", "hidden": true, "default": [{ "name": "功能", "route": "player", "desc": "對外行為、業務規則、API 契約、使用者可感知的流程" }, { "name": "UI", "route": "player", "desc": "介面顯示、操作提示、輸入互動" }, { "name": "架構", "route": "engineering", "desc": "內部流程 / 時序 / 資料 plumbing、基礎設施、模組結構" }, { "name": "工具", "route": "tool", "desc": "開發 / 測試 / 建置 / 腳本工具（非對外功能）" }], "help": "cr-daily 分類 → curate 分流；依專案類型決定（Unity / Cocos 為遊戲詞表），安裝後歸專案所有，改 .agent/config.json" }
   ],
   "presets": {
     "unity": {
       "label": "Unity (C#)",
       "values": {
+        "categories": [{ "name": "玩法", "route": "player", "desc": "遊戲規則、機制、數值、獎勵" }, { "name": "UI", "route": "player", "desc": "介面顯示、操作提示、輸入互動" }, { "name": "架構", "route": "engineering", "desc": "事件 / 流程 / 時序 / 資料 plumbing" }, { "name": "編輯器", "route": "tool", "desc": "開發 / 測試 / 編輯器工具（非對外功能）" }, { "name": "渲染", "route": "engineering", "desc": "圖層排序 / 視覺內部實作 / 動畫特效" }],
         "code_roots": ["Assets/Scripts"],
         "code_exts": [".cs"],
         "excludes": ["/plugins/", "/thirdparty/", "/scripts/luban/", "/packages/", "/textmesh pro/"]
@@ -29,6 +31,7 @@
     "cocos": {
       "label": "Cocos Creator (TS)",
       "values": {
+        "categories": [{ "name": "玩法", "route": "player", "desc": "遊戲規則、機制、數值、獎勵" }, { "name": "UI", "route": "player", "desc": "介面顯示、操作提示、輸入互動" }, { "name": "架構", "route": "engineering", "desc": "事件 / 流程 / 時序 / 資料 plumbing" }, { "name": "編輯器", "route": "tool", "desc": "開發 / 測試 / 編輯器工具（非對外功能）" }, { "name": "渲染", "route": "engineering", "desc": "圖層排序 / 視覺內部實作 / 動畫特效" }],
         "code_roots": ["assets/Script"],
         "code_exts": [".ts"],
         "excludes": ["/node_modules/", "/library/", "/temp/", "/build/", "/extensions/"]

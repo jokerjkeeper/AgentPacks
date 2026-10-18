@@ -16,7 +16,7 @@
     "collect.code_exts": "cr_collect 只收這些副檔名",
     "collect.excludes": "cr_collect 排除的路徑片段（不分大小寫、正斜線；/dist/ 比對任何層的 dist 目錄，也可寫檔名片段如 .min.js）",
     "collect.ref": "cr_collect / daily_preflight 預設 review 的 git 參照（例 origin/main）",
-    "categories": "cr-daily (b) 素材的「分類」詞表與 /curate 的分流去向（route: player / engineering / tool）",
+    "categories": "cr-daily (b) 素材的「分類」詞表與 /curate 的分流去向（route: player = 使用者面向功能頁 / engineering = 工程頁 / tool = 工具頁）。分類名不可與 modules.json 的模組名相同（兩者都會寫進頁面 system:）。依專案類型產生，之後歸專案所有",
     "wiki.page_prefix": "主題頁檔名前綴（build_index 只掃這個前綴）"
   },
   "paths": {
@@ -40,13 +40,7 @@
     "excludes": {{excludes}},
     "ref": {{branch}}
   },
-  "categories": [
-    { "name": "玩法", "route": "player", "desc": "遊戲 / 業務規則、機制、數值、獎勵" },
-    { "name": "UI", "route": "player", "desc": "介面顯示、操作提示、輸入互動" },
-    { "name": "系統", "route": "engineering", "desc": "事件 / 流程 / 時序 / 資料 plumbing" },
-    { "name": "編輯器", "route": "tool", "desc": "開發 / 測試 / 編輯器工具（非對外功能）" },
-    { "name": "渲染", "route": "engineering", "desc": "圖層排序 / 視覺內部實作 / 動畫特效" }
-  ],
+  "categories": {{categories}},
   "wiki": {
     "page_prefix": "主題-"
   },

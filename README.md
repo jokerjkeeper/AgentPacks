@@ -56,7 +56,7 @@ packs/<id>/
 | `skills[]` | skill 名稱，來源 `skills/<name>/`；裝成 managed 檔，並依目標的 agent-env 產生各家入口 |
 | `specs[]` | `{ file, title, load: auto\|ondemand, when, mode?, template? }`：來源 `specs/<file>`，`mode` 預設 managed；寫入 AGENTS.md 索引表，`auto` 另加 `@` 匯入行 |
 | `requires_tools[]` | `{ name, cmd, hint, optional }`：安裝前檢查的外部工具（`cmd` 結束碼 0 即通過） |
-| `params[]` | `{ key, label, type: string\|list\|multi, options?, default, help, required, secret }`（`multi` 為多選，`options: [{ value, label }]`）；`default` 可用 `{{dirname}}`（目標資料夾名）；`required: false` 允許留空；`secret: true` 以密碼框輸入且不寫入 lock（token 用）；`detect: code_roots\|code_exts` 由 launcher 掃描目標 repo 自動帶入（依 `.agent/layout.json`，見下方「程式碼偵測」） |
+| `params[]` | `{ key, label, type: string\|list\|multi\|json, options?, default, help, required, secret, hidden }`（`multi` 為多選，`options: [{ value, label }]`；`json` 為任意結構，模板輸出 JSON；`hidden: true` 不出現在表單、只顯示摘要，通常由 preset 決定，例 wiki 的 `categories`）；`default` 可用 `{{dirname}}`（目標資料夾名）；`required: false` 允許留空；`secret: true` 以密碼框輸入且不寫入 lock（token 用）；`detect: code_roots\|code_exts` 由 launcher 掃描目標 repo 自動帶入（依 `.agent/layout.json`，見下方「程式碼偵測」） |
 | `presets{}` | `{ <id>: { label, values: { key: value } } }`：依專案類型帶入參數預設值 |
 | `files[]` | `{ path, source?, mode, template?, sync? }`，見下表；`source` 相對 pack 目錄，預設 `files/<path>`；`sync`（僅 seed 的 .json 模板）列出重新安裝時要以新參數覆寫的 JSON 路徑（例 `paths.code_roots`），其餘欄位保留專案手改 |
 | `post_install[]` | `{ id, label, check, skip_if_exists, run: [argv…], default }`：安裝後可勾選執行的指令 |
