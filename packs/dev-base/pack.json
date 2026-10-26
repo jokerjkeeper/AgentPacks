@@ -1,0 +1,35 @@
+{
+  "schema": 2,
+  "id": "dev-base",
+  "name": "開發基礎規範（規則 + Session）",
+  "version": "1.0.0",
+  "description": "跨專案通用的開發規則（coding.md）與 session 工作流：.agent/session.md 現況快照（≤100 行，Claude Code 經 @ 匯入一定載入）、.agent/session-log/ 歷史、.agent/ROADMAP.md 中長期進度；附 save / resume / bye / task / roadmap / report / conv / readme / review skill。安裝時自動把舊的 .claude/session.md、.codex/session.md、.claude/docs/ROADMAP.md、.claude/conv/ 搬進 .agent/。取代舊版 ~/.claude 全局 CLAUDE.md 與 commands（Agent SDK、codex、opencode 都讀不到 user 層）。",
+  "tags": ["base", "session", "rules"],
+  "requires_packs": ["agent-env"],
+  "requires_tools": [
+    { "name": "git", "cmd": "git --version", "hint": "session / roadmap / report 會讀 git 分支與 log" }
+  ],
+  "params": [],
+  "presets": {},
+  "migrate": [
+    { "from": ".claude/session.md", "to": ".agent/session-log/legacy-claude.md" },
+    { "from": ".codex/session.md", "to": ".agent/session-log/legacy-codex.md" },
+    { "from": ".claude/docs/ROADMAP.md", "to": ".agent/ROADMAP.md" },
+    { "from": ".claude/conv/", "to": ".agent/conv/" }
+  ],
+  "legacy": [
+    ".claude/commands/save.md", ".claude/commands/resume.md", ".claude/commands/bye.md",
+    ".claude/commands/task.md", ".claude/commands/roadmap.md", ".claude/commands/report.md",
+    ".claude/commands/conv.md", ".claude/commands/readme.md", ".claude/commands/review.md"
+  ],
+  "skills": ["save", "resume", "bye", "task", "roadmap", "report", "conv", "readme", "review"],
+  "specs": [
+    { "file": "coding.md", "title": "通用開發規則", "load": "auto", "when": "寫程式、搜尋檔案、串接 API、執行任務時" },
+    { "file": "session.md", "title": "Session 進度規範（快照 / 歷史 / ROADMAP）", "load": "ondemand", "when": "寫入或整理 .agent/session.md、session-log、ROADMAP 時（save / resume / roadmap skill 會讀）" }
+  ],
+  "files": [
+    { "path": "AGENTS.md", "source": "blocks/AGENTS.md", "mode": "block" },
+    { "path": ".agent/session-log", "mode": "dir" }
+  ],
+  "post_install": []
+}

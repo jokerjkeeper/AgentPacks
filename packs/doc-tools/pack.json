@@ -1,0 +1,24 @@
+{
+  "schema": 2,
+  "id": "doc-tools",
+  "name": "文件 / 圖表工具",
+  "version": "1.0.0",
+  "description": "選裝的文件產出 skill：architecture（Excalidraw 架構圖）、export-arch-html（arch.md 轉 HTML）、docs-viewer（全專案 .md 瀏覽器，內附 md_viewer.py）、ppt（python-pptx 簡報）、blog（素材寫文章）、export-math / load-math（數學模型匯出 / 載入）。產出放 .agent/，安裝時把舊的 .claude/ 產出搬過來。",
+  "tags": ["docs", "diagram", "optional"],
+  "requires_packs": ["agent-env"],
+  "requires_tools": [
+    { "name": "python", "cmd": "python --version", "hint": "docs-viewer、ppt、export-arch-html 需要 Python（ppt 另需 pip install python-pptx）", "optional": true }
+  ],
+  "params": [],
+  "presets": {},
+  "migrate": [
+    { "from": ".claude/architecture.excalidraw", "to": ".agent/architecture.excalidraw" },
+    { "from": ".claude/blog/", "to": ".agent/blog/" },
+    { "from": ".claude/math.md", "to": ".agent/math.md" }
+  ],
+  "legacy": [".claude/commands/architecture.md", ".claude/commands/export-arch-html.md", ".claude/commands/docs-viewer.md", ".claude/commands/ppt.md", ".claude/commands/blog.md", ".claude/commands/export-math.md", ".claude/commands/load-math.md"],
+  "skills": ["architecture", "export-arch-html", "docs-viewer", "ppt", "blog", "export-math", "load-math"],
+  "specs": [],
+  "files": [],
+  "post_install": []
+}

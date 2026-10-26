@@ -12,10 +12,13 @@ Launcher 預設從本 GitHub repo 取得最新 pack，並內建一份快照供�
 |----|------|------|
 | `agent-env` | Agent 環境 | **基礎套件**：`AGENTS.md` 索引（seed）、`CLAUDE.md` 的 `@AGENTS.md` 區塊、`.agent/agent-env.json`（勾選的 agent）、`.agent/layout.json`（seed，頂層非程式目錄約定，見 `spec/layout.md`）、`.agent/spec/`、`.agent/capabilities/skills/`、`sync_agent_skills.py`。其他 pack 都依賴它 |
 | `wiki` | 程式 Wiki | `cr-daily` 每日 code review → `curate` 策展 → `wiki/` 知識庫；`stopic` `ask` `resolve` `cr-planfix` skill；每日前置規劃器 |
-| `codegraph` | CodeGraph 索引 | `.codegraph/.gitignore`、AGENTS.md 使用說明、可選 `codegraph init` |
+| `dev-base` | 開發基礎規範 | `.agent/spec/coding.md`（通用規則）、`session.md` 規範；`.agent/session.md` 快照（≤100 行，AGENTS.md `@` 匯入）+ `session-log/` 歷史 + `ROADMAP.md`；`save` `resume` `bye` `task` `roadmap` `report` `conv` `readme` `review` skill；自動搬移舊的 `.claude/session.md`、`.codex/session.md` |
+| `codegraph` | CodeGraph 索引 | `.codegraph/.gitignore`、AGENTS.md 使用說明、`code-intel` skill、可選 `codegraph init` |
 | `git-spec` | Git 提交規範 | `.agent/spec/git.md`（通用：`[type][模組]` 格式、分組規則）、`git-project.md`（seed，專案自有的分支策略）、`modules.json`（seed）、`git` skill |
 | `taskhub` | TaskHub 工單（項目綁定） | `.claude/api.conf` + `.agent/spec/wepages.md`，綁定整個 TaskHub 項目 |
 | `wepages` | WePages 工單（task 綁定） | `.claude/api.conf` + `.agent/spec/wepages.md`，綁定 `WEPAGES_TASK_IDS` 白名單；與 taskhub 寫同一組檔案，擇一 |
+| `wp-skills` | 工單指令 | `wp` `wp-verify` `wp-attach` `wp-cleanup` `auto-execute` skill；搭配 taskhub 或 wepages |
+| `doc-tools` | 文件 / 圖表工具（選裝） | `architecture` `export-arch-html` `docs-viewer` `ppt` `blog` `export-math` `load-math` skill；產出放 `.agent/` |
 | `unity-cli` | Unity CLI / Editor MCP | `unity pipeline install`（`com.unity.pipeline`）、CLAUDE.md 使用說明、`unity-inspector` 唯讀 subagent；可選在 `.mcp.json` 固定本專案的 `unity-editor-mcp`（Claude Code 專屬） |
 
 ## 多 agent 結構
@@ -53,6 +56,7 @@ packs/<id>/
 | `id` / `name` / `version` / `description` | 基本資訊；`version` 採 semver，改內容就要升版 |
 | `requires_packs[]` | 相依 pack id；目標未安裝且本批次沒勾時拒絕安裝（launcher 勾選時會自動帶上） |
 | `legacy[]` | 舊版放檔位置（結尾 `/` 表示目錄），例：wiki 的 `.claude/skills/cr-daily/`、`.claude/commands/curate.md`。勾「接管舊結構」安裝時，存在且不屬於任何 pack 的項目會先備份到 `.agent/legacy-backup/<時間>/` |
+| `migrate[]` | `{ from, to }`：一對一搬移舊位置的專案資料（例 `.claude/session.md` → `.agent/session-log/legacy-claude.md`，結尾 `/` 表示目錄）。與 `legacy` 不同，內容保留在新位置、不需勾「接管」，安裝時一律執行；目標已存在則不搬並提示手動合併 |
 | `skills[]` | skill 名稱，來源 `skills/<name>/`；裝成 managed 檔，並依目標的 agent-env 產生各家入口 |
 | `specs[]` | `{ file, title, load: auto\|ondemand, when, mode?, template? }`：來源 `specs/<file>`，`mode` 預設 managed；寫入 AGENTS.md 索引表，`auto` 另加 `@` 匯入行 |
 | `requires_tools[]` | `{ name, cmd, hint, optional }`：安裝前檢查的外部工具（`cmd` 結束碼 0 即通過） |
