@@ -2,7 +2,7 @@
   "schema": 2,
   "id": "wepages",
   "name": "WePages 工單（task 綁定）",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "把本目錄綁定到 WePages 的一批 task（WEPAGES_TASK_IDS 白名單）：產生 .claude/api.conf 與 .agent/spec/wepages.md，搭配 /wp-attach、/wp-cleanup。與 taskhub pack 寫同一組檔案，兩者擇一。",
   "requires_packs": ["agent-env"],
   "tags": ["wepages", "ticket"],

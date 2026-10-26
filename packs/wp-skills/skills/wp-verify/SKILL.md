@@ -1,7 +1,7 @@
 ---
 name: wp-verify
 description: 建立本階段驗收：寫 docs/valid/<task-id>-<slug>.md 驗收文檔 + 在 WePages 建驗收組 + 加驗收項。當用戶呼叫 /wp-verify、說「建立驗收 / 交付驗收」時觸發。
-version: 1.0.0
+version: 1.0.1
 origin: agentpacks/wp-skills
 ---
 
@@ -67,6 +67,8 @@ origin: agentpacks/wp-skills
 文檔內文是**過程記錄**，後續驗收只在 WePages 勾選、不改文檔（要留 git 歷史）。
 
 ### Step 4：在 WePages 建立驗收組
+
+> 下方 curl 是 WePages 的寫法（端點名稱兩種後端不同，**以 `.agent/spec/wepages.md` 為準**：WePages 用 `acceptance/list`、`acceptance/group/create`；TaskHub 用 `acceptance/get`、`acceptance/group/add`）；`doc_path` 的目錄也依 spec（TaskHub 專案慣例為 `aispec/valid/`）。
 
 - MCP：`create_acceptance_group(task_id, title, doc_path)` → 取得 `group_id`
 - curl：

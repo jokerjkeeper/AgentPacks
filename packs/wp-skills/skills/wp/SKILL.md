@@ -1,7 +1,7 @@
 ---
 name: wp
 description: 統一操作 WePages / TaskHub 工單（列表、查詢、更新、完成、子清單、驗收勾選…），依參數自動判斷操作；本地走 curl + .claude/api.conf，Discord robot 走 MCP。當用戶呼叫 /wp 或要查詢 / 更新工單時觸發。
-version: 1.0.0
+version: 1.0.1
 origin: agentpacks/wp-skills
 ---
 
@@ -37,8 +37,8 @@ source .claude/api.conf   # 載入 WEPAGES_URL / WEPAGES_TOKEN / WEPAGES_TASK_ID
 | 子清單查 | `get_checklist` | `GET /api/task/checklist/list?task_id=<id>` |
 | 子清單勾選 | `toggle_checklist_item` | `POST /api/task/checklist/toggle/<id>` |
 | 子清單新增 | `add_checklist_items` | `POST /api/task/checklist/add`（task_id, items[]） |
-| 驗收（某task） | `get_acceptance` | `GET /api/task/acceptance/list?task_id=<id>` |
-| 建驗收組 | `create_acceptance_group` | `POST /api/task/acceptance/group/create`（task_id, title, doc_path） |
+| 驗收（某task） | `get_acceptance` | `GET /api/task/acceptance/list?task_id=<id>`（TaskHub：`acceptance/get`） |
+| 建驗收組 | `create_acceptance_group` | `POST /api/task/acceptance/group/create`（task_id, title, doc_path；TaskHub：`acceptance/group/add`） |
 | 加驗收項 | `add_acceptance_items` | `POST /api/task/acceptance/item/add`（group_id, items[]） |
 | 驗收項勾選 | `toggle_checklist_item` | `POST /api/task/checklist/toggle/<id>`（與子清單共用） |
 | 待驗收總覽 | `list_pending_acceptance` | `GET /api/task/acceptance/pending` |
@@ -150,7 +150,7 @@ curl -s "$WEPAGES_URL/api/task/get?id=77" -H "Authorization: Bearer $WEPAGES_TOK
 **建立**本階段驗收（寫文檔 + 建組 + 加項）請用獨立 skill **`/wp-verify`**，不要在這裡手動拼。
 
 **執行：**
-- 查看：`mcp__wepages-tasks__get_acceptance`（curl：`GET /api/task/acceptance/list?task_id=<id>`）
+- 查看：`mcp__wepages-tasks__get_acceptance`（curl：`GET /api/task/acceptance/list?task_id=<id>`）（端點名稱兩種後端不同，**以 `.agent/spec/wepages.md` 為準**：WePages 用 `acceptance/list`、`acceptance/group/create`；TaskHub 用 `acceptance/get`、`acceptance/group/add`）
 - 待驗收總覽：`mcp__wepages-tasks__list_pending_acceptance`（curl：`GET /api/task/acceptance/pending`）
 - 勾選：`mcp__wepages-tasks__toggle_checklist_item`（驗收項與子清單共用此工具）
 

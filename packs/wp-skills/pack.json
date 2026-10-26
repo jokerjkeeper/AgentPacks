@@ -2,7 +2,7 @@
   "schema": 2,
   "id": "wp-skills",
   "name": "WePages / TaskHub 工單指令",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "工單操作 skill：wp（查詢 / 更新 / 完成 / 子清單 / 驗收）、wp-verify（建立階段驗收）、wp-attach / wp-cleanup（維護 task 白名單）、auto-execute（智能工單，需 wepages MCP）。需搭配 taskhub 或 wepages pack（提供 .claude/api.conf 與 .agent/spec/wepages.md）。綁定改由安裝那兩個 pack 完成，取代舊的 /wp-init、/wp-bind-project。",
   "tags": ["wepages", "taskhub", "ticket"],
   "requires_packs": ["agent-env"],
