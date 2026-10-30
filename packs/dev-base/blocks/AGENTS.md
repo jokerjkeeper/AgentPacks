@@ -3,7 +3,9 @@
 - **Session 開始**：先讀 `.agent/session.md`（現況快照），摘要進度並確認待辦；與目前 git 分支不一致時提醒用戶。
 - **Session 結束或用戶要求存檔**：用 `save` skill 覆蓋更新快照（舊快照先追加到 `.agent/session-log/YYYY-MM.md`），快照**不超過 100 行**。
 - `.agent/session.md` 不存在、但 `.agent/session-log/legacy-*.md` 存在時：用 `resume` skill 從舊紀錄合併出第一份快照。
-- 中長期階段與跨 session 決策寫 `.agent/ROADMAP.md`（`roadmap` skill）。完整規範見 `.agent/spec/session.md`。
+- 中長期階段與跨 session 決策寫 `.agent/ROADMAP.md`（`roadmap` skill）。
+- 討論到一半、要留待之後接續的對話（設計討論、方案比較…）用 `conv` skill 存成 `.agent/conv/conv_<主題>.md`；只在用戶指定主題或接續時才讀，不自動載入。
+- 完整規範見 `.agent/spec/session.md`。
 - 舊位置 `.claude/session.md`、`.codex/session.md`、`.claude/docs/ROADMAP.md` 已停用，**不要再寫入**。
 
 @.agent/session.md

@@ -3,13 +3,14 @@
 > AgentPacks dev-base 規範。claude / codex / opencode 共用同一套檔案；
 > 用戶在多台電腦（公司 / 家裡）之間切換，**三種檔案都進版控**，靠 git 同步。
 
-## 一、三層檔案
+## 一、檔案分層
 
 | 檔案 | 內容 | 寫法 | 載入 |
 |---|---|---|---|
 | `.agent/session.md` | **現況快照**：狀態、當前任務、待辦、阻塞、近期決策 | 覆蓋，**≤ 100 行** | Claude Code 經 AGENTS.md 的 `@` 匯入自動載入；其他 agent session 開始時自行讀取 |
 | `.agent/session-log/YYYY-MM.md` | 歷史：每次存檔前被取代的舊快照 | 只追加，不改舊內容 | 需要查歷史時才讀 |
 | `.agent/ROADMAP.md` | 階段劃分、週誌、跨 session 重要決策 | `roadmap` skill 維護 | 需要時才讀 |
+| `.agent/conv/conv_<主題>.md` | 對話歸檔：討論到一半的 session 對話（背景、結論、技術細節、後續行動），供日後接續 | `conv` skill 建立，接續時追加 | 用戶 `/conv <主題>` 或要求接續時才讀 |
 
 - `.agent/session-log/legacy-claude.md`、`legacy-codex.md`：從舊位置（`.claude/session.md`、`.codex/session.md`）搬來的原始紀錄，保留不改。
 - 舊位置 `.claude/session.md`、`.codex/session.md`、`.claude/docs/ROADMAP.md` 停用，不得再寫入。
