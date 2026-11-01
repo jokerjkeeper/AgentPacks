@@ -54,6 +54,7 @@ packs/<id>/
 |------|------|
 | `schema` | `1`（舊格式）或 `2`（支援 `requires_packs` / `skills` / `specs` / `multi` 參數） |
 | `id` / `name` / `version` / `description` | 基本資訊；`version` 採 semver，改內容就要升版 |
+| `updated` | 最後更新日期 `YYYY-MM-DD`（launcher 卡片顯示在版本旁）；由 `node scripts/stamp-updated.js` 依 git 紀錄回填，勿手算 |
 | `requires_packs[]` | 相依 pack id；目標未安裝且本批次沒勾時拒絕安裝（launcher 勾選時會自動帶上） |
 | `legacy[]` | 舊版放檔位置（結尾 `/` 表示目錄），例：wiki 的 `.claude/skills/cr-daily/`、`.claude/commands/curate.md`。勾「接管舊結構」安裝時，存在且不屬於任何 pack 的項目會先備份到 `.agent/legacy-backup/<時間>/` |
 | `migrate[]` | `{ from, to }`：一對一搬移舊位置的專案資料（例 `.claude/session.md` → `.agent/session-log/legacy-claude.md`，結尾 `/` 表示目錄）。與 `legacy` 不同，內容保留在新位置、不需勾「接管」，安裝時一律執行；目標已存在則不搬並提示手動合併 |
@@ -95,6 +96,7 @@ launcher 選到有 `detect` 參數的 pack（wiki）時，以 `git ls-files`（�
 ## 開發流程
 
 1. 修改 `packs/<id>/` 內容並升 `version`。
+   commit 前跑 `node scripts/stamp-updated.js` 更新 `updated`（`--check` 只檢查，過期時結束碼 1）。
 2. Launcher 來源切到「本機路徑」指向本 repo，可即時測試安裝。
 3. push 到 GitHub 後，所有 Launcher 按「檢查更新」即取得新版。
 4. 發佈新版 Launcher 前，在 ClaudeCodeEg 跑 `scripts/sync-packs` 更新內建快照。

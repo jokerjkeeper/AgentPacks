@@ -3,6 +3,7 @@
   "id": "taskhub",
   "name": "TaskHub 工單（項目綁定）",
   "version": "1.1.0",
+  "updated": "2026-10-17",
   "description": "把本目錄綁定到 TaskHub 的整個項目：產生 .claude/api.conf 與 .agent/spec/wepages.md（curl 速查、驗收清單端點）。與 wepages pack 寫同一組檔案，兩者擇一。",
   "requires_packs": ["agent-env"],
   "tags": ["taskhub", "wepages", "ticket"],

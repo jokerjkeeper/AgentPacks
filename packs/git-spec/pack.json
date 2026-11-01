@@ -3,6 +3,7 @@
   "id": "git-spec",
   "name": "Git 提交規範",
   "version": "2.0.0",
+  "updated": "2026-10-18",
   "description": "團隊 git commit 規範（canonical）：[type][模組] 標題格式、type 詞表、分組規則、Unity .meta 配對、cc 只 commit 不 push；分支策略寫在專案自有的 git-project.md。附 git skill（從雜亂工作區只提交本功能），claude / codex / opencode 共用（需 agent-env）。",
   "tags": ["git", "spec"],
   "requires_packs": ["agent-env"],

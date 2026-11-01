@@ -3,6 +3,7 @@
   "id": "agent-env",
   "name": "Agent 環境（claude / codex / opencode）",
   "version": "1.2.0",
+  "updated": "2026-11-01",
   "description": "建立跨 agent 的專案結構：AGENTS.md 索引（codex / opencode 原生讀，Claude 經 CLAUDE.md 的 @AGENTS.md 匯入）、.agent/spec 規範目錄、頂層目錄約定（.agent/layout.json，非程式目錄清單）、.agent/conv 對話歸檔約定（未定案、討論到一半的 AI 對話）、.agent/capabilities/skills 共用 skill 本體；依勾選的 agent 產生 .claude/skills、.agents/skills 或 .opencode/skills 薄入口。其他 pack 的 skill / 規範都裝進這套結構。",
   "tags": ["agent", "codex", "opencode", "base"],
   "requires_tools": [
