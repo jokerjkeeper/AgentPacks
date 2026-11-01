@@ -31,10 +31,26 @@ function today() {
   return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
 }
 
-/** 目錄最後一次 commit 的日期（commit 自身時區）；沒有紀錄回傳 null。 */
+/** unified diff 是否只動到 pack.json 的 updated 行（蓋章本身不算更新）。 */
+function onlyStampLines(diffText, manifest) {
+  const files = [...diffText.matchAll(/^\+\+\+ (?:b\/)?(.+)$/gm)].map((m) => m[1].trim())
+    .concat([...diffText.matchAll(/^--- (?:a\/)?(.+)$/gm)].map((m) => m[1].trim()))
+    .filter((file) => file !== '/dev/null');
+  if (files.some((file) => file !== manifest)) return false;
+  const changed = diffText.split(/\r?\n/).filter((line) => /^[+-]/.test(line) && !/^(\+\+\+|---)/.test(line));
+  return changed.length > 0 && changed.every((line) => /^[+-]\s*"updated"\s*:/.test(line));
+}
+
+/** 目錄最後一次實質 commit 的日期（commit 自身時區，跳過只蓋章的 commit）；沒有紀錄回傳 null。 */
 function lastCommitDate(rel) {
-  const out = git(['log', '-1', '--format=%cd', '--date=format:%Y-%m-%d', '--', rel]).trim();
-  return DATE_RE.test(out) ? out : null;
+  const manifest = `${rel}/pack.json`;
+  const commits = git(['log', '--format=%H %cd', '--date=format:%Y-%m-%d', '--', rel])
+    .split(/\r?\n/).filter(Boolean).map((line) => line.split(' '));
+  for (const [sha, date] of commits) {
+    const diff = git(['show', '--format=', '-U0', '--no-renames', sha, '--', rel]);
+    if (!onlyStampLines(diff, manifest)) return DATE_RE.test(date) ? date : null;
+  }
+  return null;
 }
 
 /** packs/<id>/ 是否有未提交的實質修改（只改 pack.json 的 updated 行不算）。 */
@@ -44,9 +60,7 @@ function hasRealChanges(rel) {
   if (!files.length) return false;
   const manifest = `${rel}/pack.json`;
   if (files.some((file) => file !== manifest)) return true;
-  const changed = git(['diff', '-U0', 'HEAD', '--', manifest]).split(/\r?\n/)
-    .filter((line) => /^[+-]/.test(line) && !/^(\+\+\+|---)/.test(line));
-  return changed.some((line) => !/^[+-]\s*"updated"\s*:/.test(line));
+  return !onlyStampLines(git(['diff', '-U0', 'HEAD', '--', manifest]), manifest);
 }
 
 /** 把 updated 寫進 pack.json 文字（保留原排版）：已有則替換，否則插在 version 行之後。 */
