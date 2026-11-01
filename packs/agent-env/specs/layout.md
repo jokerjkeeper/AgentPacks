@@ -16,6 +16,16 @@
 | `spec/`、`specs/` | 需求 / 規格文件 |
 | `node_modules/`、`dist/`、`build/`、`out/`、`coverage/`、`venv/`、`Library/`、`Temp/`、`obj/`、`bin/`… | 依賴與建置產物 |
 
+## `.agent/` 內的對話歸檔
+
+| 位置 | 用途 |
+|---|---|
+| `.agent/conv/conv_<主題>.md` | 暫存與 AI（claude、codex…）的討論內容：尚未定案、討論到一半、還不打算馬上動工的對話（設計構想、方案比較…），供日後接續 |
+
+- 這裡的內容**不是**已定案的規格或待辦：不自動載入、不當成要執行的任務；用戶指定主題或要求接續時才讀。
+- 討論定案後，結論移到正式位置（`.agent/spec/`、`docs/`、`spec/`、session 待辦或工單），conv 檔留作紀錄。
+- 有安裝 dev-base 時用 `conv` skill 建立 / 載入；沒有時照同樣檔名手動存放即可。
+
 ## 規則
 
 - 新增文件、設計稿、暫存檔時，放進上表對應目錄，**不要**在頂層另開新的非程式目錄；確有需要就同步加進 `.agent/layout.json` 的 `reserved_dirs`。
