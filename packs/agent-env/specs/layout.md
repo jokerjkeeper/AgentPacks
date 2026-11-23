@@ -14,6 +14,7 @@
 | `temp/`、`tmp/` | 暫存，不進版控 |
 | `raw/`、`wiki/`、`outputs/` | wiki pack：原始來源 / 知識庫 / 查詢產出 |
 | `spec/`、`specs/` | 需求 / 規格文件 |
+| `verification/` | verification pack：驗收紀錄（meta.json、截圖、HTML 報告） |
 | `node_modules/`、`dist/`、`build/`、`out/`、`coverage/`、`venv/`、`Library/`、`Temp/`、`obj/`、`bin/`… | 依賴與建置產物 |
 
 ## `.agent/` 內的對話歸檔

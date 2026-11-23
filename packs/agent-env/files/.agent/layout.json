@@ -3,7 +3,7 @@
   "reserved_dirs": [
     ".*",
     "design", "aispec", "docs", "doc", "temp", "tmp",
-    "raw", "wiki", "outputs", "spec", "specs",
+    "raw", "wiki", "outputs", "spec", "specs", "verification",
     "node_modules", "dist", "build", "out", "coverage", "venv", "__pycache__",
     "Library", "Temp", "Logs", "obj", "bin"
   ],
