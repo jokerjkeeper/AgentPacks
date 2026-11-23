@@ -1,7 +1,7 @@
 ---
 name: wp-verify
 description: 建立本階段驗收：寫 docs/valid/<task-id>-<slug>.md 驗收文檔 + 在 WePages 建驗收組 + 加驗收項。當用戶呼叫 /wp-verify、說「建立驗收 / 交付驗收」時觸發。
-version: 1.0.1
+version: 1.1.0
 origin: agentpacks/wp-skills
 ---
 
@@ -46,6 +46,9 @@ origin: agentpacks/wp-skills
 決定**驗收組標題**（階段名，如「階段一：登入流程」）。
 
 ### Step 3：寫驗收文檔到本 repo
+
+> 已用 verification pack（`ui-verify`）做過畫面驗收時，驗收文檔只列驗收點並附報告連結
+> `verification/<id>/index.html`，不重複抄步驟與截圖；沒有報告才照下方完整格式寫。
 
 路徑：`docs/valid/<task-id>-<slug>.md`（slug 取自標題；目錄不存在就建）。
 
