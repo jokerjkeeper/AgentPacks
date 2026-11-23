@@ -18,6 +18,7 @@ Launcher 預設從本 GitHub repo 取得最新 pack，並內建一份快照供�
 | `taskhub` | TaskHub 工單（項目綁定） | `.claude/api.conf` + `.agent/spec/wepages.md`，綁定整個 TaskHub 項目 |
 | `wepages` | WePages 工單（task 綁定） | `.claude/api.conf` + `.agent/spec/wepages.md`，綁定 `WEPAGES_TASK_IDS` 白名單；與 taskhub 寫同一組檔案，擇一 |
 | `wp-skills` | 工單指令 | `wp` `wp-verify` `wp-attach` `wp-cleanup` `auto-execute` skill；搭配 taskhub 或 wepages |
+| `verification` | 畫面驗收（選裝） | `ui-verify` skill、`.agent/spec/verification.md`（通用流程）、`verification-project.md`（seed，專案環境與例外）、`.agent/scripts/build_verification.py`；紀錄與 HTML 報告放 `verification/` |
 | `doc-tools` | 文件 / 圖表工具（選裝） | `architecture` `export-arch-html` `docs-viewer` `ppt` `blog` `export-math` `load-math` skill；產出放 `.agent/` |
 | `unity-cli` | Unity CLI / Editor MCP | `unity pipeline install`（`com.unity.pipeline`）、CLAUDE.md 使用說明、`unity-inspector` 唯讀 subagent；可選在 `.mcp.json` 固定本專案的 `unity-editor-mcp`（Claude Code 專屬） |
 
@@ -83,7 +84,7 @@ packs/<id>/
 
 各專案的程式不一定在 `src/`，也常是多語言混合。agent-env 在目標專案放一份 `.agent/layout.json`（seed，可依專案增減）：
 
-- `reserved_dirs`：頂層**非程式**目錄（`.*` 代表所有點開頭目錄，另有 `design` `aispec` `docs` `temp` `raw` `wiki` `outputs` `spec`、建置產物等）
+- `reserved_dirs`：頂層**非程式**目錄（`.*` 代表所有點開頭目錄，另有 `design` `aispec` `docs` `temp` `raw` `wiki` `outputs` `spec` `verification`、建置產物等）
 - `source_exts`：視為程式碼的副檔名
 
 launcher 選到有 `detect` 參數的 pack（wiki）時，以 `git ls-files`（非 git repo 則走訪目錄）掃描目標，扣掉 reserved 與 `excludes` 後，**含程式檔的頂層目錄 = `code_roots`、出現的程式副檔名 = `code_exts`**。新安裝自動帶入；已安裝則在表單顯示偵測結果與差異（目錄不存在、漏收的目錄 / 副檔名），按「套用偵測結果」再重新安裝即可同步 `.agent/config.json`。

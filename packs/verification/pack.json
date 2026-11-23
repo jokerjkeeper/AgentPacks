@@ -1,0 +1,26 @@
+{
+  "schema": 2,
+  "id": "verification",
+  "name": "畫面驗收（實跑 → 截圖 → 報告）",
+  "version": "1.0.0",
+  "updated": "2026-11-23",
+  "description": "使用者看得到的功能完成後的驗收流程：跑測試、列案例、實際操作、截圖、比對分析，寫成 verification/ver_*/meta.json 並產生 HTML 報告與總表。附 ui-verify skill 與報告產生腳本；網址、測試帳號、截圖是否進 git 等差異寫在專案自有的 verification-project.md。適合有畫面可操作的專案；工單驗收組仍由 wp-skills 的 wp-verify 處理。",
+  "tags": ["verification", "ui", "qa"],
+  "requires_packs": ["agent-env"],
+  "requires_tools": [
+    { "name": "python", "cmd": "python --version", "hint": "產生驗收報告需要 Python 3.8+（只用標準庫）" }
+  ],
+  "params": [],
+  "presets": {},
+  "legacy": ["scripts/build_verification.py"],
+  "skills": ["ui-verify"],
+  "specs": [
+    { "file": "verification.md", "title": "驗收流程（實跑案例、截圖、分析、可視化報告）", "load": "ondemand", "when": "做完使用者看得到的功能或修正、回報完成前；報告放 verification/" },
+    { "file": "verification-project.md", "title": "驗收本專案現況（網址 / 帳號 / 清理 / 例外）", "load": "ondemand", "mode": "seed", "when": "執行驗收前，與 verification.md 一起讀；專案自有，可直接修改" }
+  ],
+  "files": [
+    { "path": ".agent/scripts/build_verification.py", "mode": "managed" },
+    { "path": "verification", "mode": "dir" }
+  ],
+  "post_install": []
+}
